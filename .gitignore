@@ -9,3 +9,4 @@ generated
 
 # Docker volumes
 postgres_data
+data/
