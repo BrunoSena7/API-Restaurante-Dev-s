@@ -1,0 +1,62 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Restaurante Devs",
+    "version": "1.0.0",
+    "description": "Documentação oficial da API de gestão de restaurante desenvolvida pela equipe Devs. Inclui módulos de categorias, produtos, pedidos, clientes e autenticação."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/categories": {
+      "get": {
+        "summary": "Lista todas as categorias",
+        "tags": [
+          "Categorias"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de categorias retornada com sucesso"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria uma nova categoria",
+        "tags": [
+          "Categorias"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Categoria criada com sucesso"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": [
+    {
+      "name": "Categorias",
+      "description": "Gerenciamento de categorias de produtos"
+    }
+  ]
+}
