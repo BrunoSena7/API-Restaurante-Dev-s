@@ -2,12 +2,12 @@
 import api from '../services/api';
 import { useEffect, useState } from 'react';
 
-export default function ListarProdutos() {
-  const [produtos, setProdutos] = useState([]);
+export default function ListarCategorias() {
+  const [categorias, setCategorias] = useState([]);
 
   async function carregar() {
-    const r = await api.get('/produtos');
-    setProdutos(r.data);
+    const r = await api.get('/categorias');
+    setCategorias(r.data);
   }
 
   useEffect(() => { carregar(); }, []);
@@ -21,28 +21,24 @@ export default function ListarProdutos() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Produtos</h1>
+      <h1>Categorias</h1>
 
       <table border="1" cellPadding="10" style={{ marginTop: '20px' }}>
         <thead>
           <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Preço</th>
-            <th>Categoria</th>
             <th>Ações</th>
           </tr>
         </thead>
 
         <tbody>
-          {produtos.map(p => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.nome}</td>
-              <td>{p.preco}</td>
-              <td>{p.categoria}</td>
+          {categorias.map(c => (
+            <tr key={c.id}>
+              <td>{c.id}</td>
+              <td>{c.nome}</td>
               <td>
-                <Link to={`/produtos/editar/${p.id}`}>
+                <Link to={`/categorias/editar/${c.id}`}>
                   <button style={btnEditar}>Editar</button>
                 </Link>
               </td>
@@ -53,5 +49,3 @@ export default function ListarProdutos() {
     </div>
   );
 }
-
-

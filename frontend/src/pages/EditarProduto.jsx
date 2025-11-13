@@ -1,82 +1,77 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import api from "../services/api";
+﻿import { useState } from 'react';
 
-function EditarProduto() {
-  const { id } = useParams();
-  const [nome, setNome] = useState("");
-  const [preco, setPreco] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [mensagem, setMensagem] = useState("");
+export default function EditarProduto() {
+  const [nome, setNome] = useState('Produto Exemplo');
+  const [preco, setPreco] = useState('29.90');
+  const [categoria, setCategoria] = useState('Lanches');
 
-  useEffect(() => {
-    async function carregarProduto() {
-      try {
-        const response = await api.get(`/produtos/${id}`);
-        setNome(response.data.nome);
-        setPreco(response.data.preco);
-        setCategoria(response.data.categoria);
-      } catch (error) {
-        console.error("Erro ao carregar produto:", error);
-      }
-    }
-
-    carregarProduto();
-  }, [id]);
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    try {
-      await api.put(`/produtos/${id}`, {
-        nome,
-        preco: Number(preco),
-        categoria,
-      });
-
-      setMensagem("Produto atualizado com sucesso!");
-    } catch (error) {
-      console.error(error);
-      setMensagem("Erro ao atualizar produto.");
-    }
+  function salvar() {
+    alert('Alterações salvas com sucesso!');
   }
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Editar Produto {id}</h1>
+    <div style={{ padding: '20px' }}>
+      <h1>Editar Produto</h1>
 
-      {mensagem && <p>{mensagem}</p>}
+      <div style={{
+        marginTop: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: '400px',
+        gap: '15px'
+      }}>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome:</label><br />
-          <input value={nome} onChange={(e) => setNome(e.target.value)} required />
-        </div>
+        <input 
+          type='text'
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          placeholder='Nome'
+          style={input}
+        />
 
-        <div>
-          <label>Pre�o:</label><br />
-          <input
-            type="number"
-            step="0.01"
-            value={preco}
-            onChange={(e) => setPreco(e.target.value)}
-            required
-          />
-        </div>
+        <input 
+          type='number'
+          value={preco}
+          onChange={(e) => setPreco(e.target.value)}
+          placeholder='Preço'
+          style={input}
+        />
 
-        <div>
-          <label>Categoria:</label><br />
-          <input
-            value={categoria}
-            onChange={(e) => setCategoria(e.target.value)}
-            required
-          />
-        </div>
+        <input 
+          type='text'
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
+          placeholder='Categoria'
+          style={input}
+        />
 
-        <button type="submit" style={{ marginTop: 10 }}>Salvar</button>
-      </form>
+        <button onClick={salvar} style={btnSalvar}>
+          Salvar Alterações
+        </button>
+
+        <a href='/produtos' style={{ color:'#aaa', marginTop:'10px' }}>
+          Voltar
+        </a>
+      </div>
     </div>
   );
 }
 
-export default EditarProduto;
+const input = {
+  padding: '12px',
+  background: '#1c1c1c',
+  border: '1px solid #333',
+  borderRadius: '8px',
+  color: 'white'
+};
+
+const btnSalvar = {
+  padding: '12px',
+  marginTop: '10px',
+  background: '#4CAF50',
+  border: 'none',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  color: 'white',
+  fontWeight: 'bold'
+};

@@ -1,74 +1,35 @@
-import { useState } from "react";
-import api from "../services/api";
+﻿export default function CriarProduto() {
 
-function CriarProduto() {
-  const [nome, setNome] = useState("");
-  const [preco, setPreco] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [mensagem, setMensagem] = useState("");
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    try {
-      await api.post("/produtos", {
-        nome,
-        preco: Number(preco),
-        categoria,
-      });
-
-      setMensagem("Produto criado com sucesso!");
-      setNome("");
-      setPreco("");
-      setCategoria("");
-    } catch (error) {
-      console.error(error);
-      setMensagem("Erro ao criar produto.");
-    }
+  function salvar() {
+    alert('Produto criado com sucesso!');
   }
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: '20px' }}>
       <h1>Criar Produto</h1>
 
-      {mensagem && <p>{mensagem}</p>}
+      <div style={{ marginBottom: '15px' }}>
+        <label>Nome:</label><br />
+        <input type='text' style={{ padding: '8px', width: '280px' }} />
+      </div>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome:</label><br />
-          <input
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
-        </div>
+      <div style={{ marginBottom: '15px' }}>
+        <label>Preço:</label><br />
+        <input type='number' style={{ padding: '8px', width: '280px' }} />
+      </div>
 
-        <div>
-          <label>Pre�o:</label><br />
-          <input
-            type="number"
-            step="0.01"
-            value={preco}
-            onChange={(e) => setPreco(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Categoria:</label><br />
-          <input
-            value={categoria}
-            onChange={(e) => setCategoria(e.target.value)}
-            required
-          />
-        </div>
-
-        <button type="submit" style={{ marginTop: "10px" }}>
-          Criar
-        </button>
-      </form>
+      <button 
+        onClick={salvar} 
+        style={{
+          background:'#4caf50',
+          color:'white',
+          padding:'10px 20px',
+          borderRadius:'6px',
+          cursor:'pointer'
+        }}
+      >
+        Salvar
+      </button>
     </div>
   );
 }
-
-export default CriarProduto;

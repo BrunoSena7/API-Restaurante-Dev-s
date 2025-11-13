@@ -1,22 +1,35 @@
-import { Link } from "react-router-dom";
-
-function Navbar() {
+﻿export default function Navbar() {
   return (
-    <nav style={{
-      padding: "15px",
-      background: "#111",
-      display: "flex",
-      gap: "20px"
+    <div style={{
+      height: '65px',
+      borderBottom: '1px solid #333',
+      display: 'flex',
+      alignItems: 'center',
+      padding: '0 25px',
+      background: '#121212',
+      justifyContent: 'space-between'
     }}>
-      <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-        Lista de Produtos
-      </Link>
+      <h3>Painel Administrativo</h3>
 
-      <Link to="/produtos/criar" style={{ color: "white", textDecoration: "none" }}>
-        Criar Produto
-      </Link>
-    </nav>
+      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        <input
+          placeholder='Buscar...'
+          style={{
+            background: '#222',
+            border: '1px solid #333',
+            padding: '8px 12px',
+            borderRadius: '8px',
+            color: 'white'
+          }}
+        />
+
+        <div style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          background: '#444'
+        }}></div>
+      </div>
+    </div>
   );
 }
-
-export default Navbar;
