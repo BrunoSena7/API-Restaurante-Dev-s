@@ -16,11 +16,8 @@ export default function Sidebar() {
 
       <Link style={link} to="/">📊 Dashboard</Link>
       <Link style={link} to="/produtos">📦 Produtos</Link>
-      <a style={link}>🧾 Pedidos</a>
-
-      {/* 👉 Aqui estava errado, agora está certo */}
+      <Link style={link} to="/pedidos">🧾 Pedidos</Link>   {/* ✔ AGORA FUNCIONA */}
       <Link style={link} to="/categorias">🎯 Categorias</Link>
-
       <a style={link}>⚙ Configurações</a>
     </div>
   );
