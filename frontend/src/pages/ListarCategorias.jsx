@@ -1,7 +1,5 @@
 ﻿import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-
-// IMPORT CORRETO PELO NOME DA SUA PASTA  ✅
 import { listarCategorias, excluirCategoria } from "../services/categoryService";
 
 export default function ListarCategorias() {
@@ -18,6 +16,8 @@ export default function ListarCategorias() {
   }
 
   function handleDelete(id) {
+    if (!window.confirm("Deseja realmente excluir essa categoria?")) return;
+
     excluirCategoria(id)
       .then(() => carregarCategorias())
       .catch((err) => console.error("Erro ao excluir categoria:", err));
@@ -26,7 +26,6 @@ export default function ListarCategorias() {
   return (
     <div style={{ padding: "40px", width: "100%", color: "white" }}>
 
-      {/* TÍTULO + BOTÃO */}
       <div
         style={{
           display: "flex",
@@ -38,7 +37,7 @@ export default function ListarCategorias() {
         <h1 style={{ fontSize: "42px", fontWeight: "700" }}>Categorias</h1>
 
         <Link
-          to="/criar-categoria"
+          to="/categorias/criar"
           style={{
             backgroundColor: "#ffb300",
             color: "black",
@@ -53,7 +52,6 @@ export default function ListarCategorias() {
         </Link>
       </div>
 
-      {/* CARD IGUAL AO FIGMA */}
       <div
         style={{
           backgroundColor: "#0f0f16",
@@ -67,36 +65,28 @@ export default function ListarCategorias() {
         <table style={{ width: "100%", color: "white", borderSpacing: 0 }}>
           <thead>
             <tr style={{ color: "#b5b5c1", borderBottom: "1px solid #1d1d29" }}>
-              <th style={{ paddingBottom: "12px" }}>ID</th>
-              <th style={{ paddingBottom: "12px" }}>Nome</th>
-              <th style={{ paddingBottom: "12px" }}>Ações</th>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Ações</th>
             </tr>
           </thead>
 
           <tbody>
             {categorias.length === 0 ? (
               <tr>
-                <td
-                  colSpan="3"
-                  style={{ paddingTop: "20px", color: "#777", textAlign: "center" }}
-                >
+                <td colSpan="3" style={{ color: "#777", textAlign: "center" }}>
                   Nenhuma categoria encontrada.
                 </td>
               </tr>
             ) : (
               categorias.map((cat) => (
-                <tr
-                  key={cat.id}
-                  style={{
-                    borderBottom: "1px solid #1d1d29",
-                    height: "45px",
-                  }}
-                >
+                <tr key={cat.id}>
                   <td>{cat.id}</td>
                   <td>{cat.nome}</td>
                   <td>
+
                     <Link
-                      to={`/editar-categoria/${cat.id}`}
+                      to={`/categorias/editar/${cat.id}`}
                       style={{ color: "#4fa3ff", marginRight: "15px" }}
                     >
                       Editar
@@ -113,6 +103,7 @@ export default function ListarCategorias() {
                     >
                       Excluir
                     </button>
+
                   </td>
                 </tr>
               ))
