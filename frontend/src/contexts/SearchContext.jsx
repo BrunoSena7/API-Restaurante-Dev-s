@@ -1,16 +1,2 @@
-import { createContext, useState, useContext } from "react";
-
-const SearchContext = createContext();
-
-export function SearchProvider({ children }) {
-  const [query, setQuery] = useState("");
-  return (
-    <SearchContext.Provider value={{ query, setQuery }}>
-      {children}
-    </SearchContext.Provider>
-  );
-}
-
-export function useSearch() {
-  return useContext(SearchContext);
-}
+// SearchContext removed — search feature deleted from UI.
+// File intentionally left blank to avoid references. Remove file if you want to delete permanently.

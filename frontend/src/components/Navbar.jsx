@@ -8,13 +8,7 @@
 
       {/* DIREITA */}
       <div style={styles.right}>
-        <div style={styles.searchWrapper}>
-          <input
-            type="text"
-            placeholder="Buscar..."
-            style={styles.searchInput}
-          />
-        </div>
+        {/* search removed per request */}
 
         <div style={styles.avatar} />
       </div>
@@ -48,22 +42,7 @@ const styles = {
     gap: "16px"
   },
 
-  searchWrapper: {
-    background: "#202028",
-    borderRadius: "999px",
-    padding: "6px 14px",
-    border: "1px solid #2A2A33",
-    minWidth: "230px"
-  },
-
-  searchInput: {
-    width: "100%",
-    background: "transparent",
-    border: "none",
-    outline: "none",
-    color: "#E5E5EA",
-    fontSize: "13px"
-  },
+  // search styles removed
 
   avatar: {
     width: "32px",
