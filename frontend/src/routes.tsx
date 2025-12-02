@@ -12,6 +12,7 @@ import CriarCategoria from "./pages/CriarCategoria";
 import EditarCategoria from "./pages/EditarCategoria";
 
 import ListarPedidos from "./pages/ListarPedidos";
+import CriarPedido from "./pages/CriarPedido"; // <--- IMPORT NOVO
 import Configuracoes from "./pages/Configuracoes";
 
 export default function AppRoutes() {
@@ -32,6 +33,7 @@ export default function AppRoutes() {
 
       {/* PEDIDOS */}
       <Route path="/pedidos" element={<AdminLayout><ListarPedidos /></AdminLayout>} />
+      <Route path="/pedidos/criar" element={<AdminLayout><CriarPedido /></AdminLayout>} /> {/* <--- ROTA NOVA */}
 
       {/* CONFIGURAÇÕES */}
       <Route path="/configuracoes" element={<AdminLayout><Configuracoes /></AdminLayout>} />
