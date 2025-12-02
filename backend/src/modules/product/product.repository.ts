@@ -1,13 +1,23 @@
 import { prisma } from "../../prisma";
 
-
 export class ProductRepository {
+  // LISTAR: Adicionamos o include para trazer os dados da Categoria
   list() {
-    return prisma.produto.findMany();
+    return prisma.produto.findMany({
+      include: {
+        categoria: true, 
+      },
+    });
   }
 
+  // BUSCAR UM: Também trazemos a categoria aqui
   show(id: number) {
-    return prisma.produto.findUnique({ where: { id } });
+    return prisma.produto.findUnique({
+      where: { id },
+      include: {
+        categoria: true,
+      },
+    });
   }
 
   create(data: any) {

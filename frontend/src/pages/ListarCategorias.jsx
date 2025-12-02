@@ -1,116 +1,100 @@
-﻿import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { listarCategorias, excluirCategoria } from "../services/categoryService";
+﻿import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+// Importamos o serviço que já funciona
+import { listarCategorias, excluirCategoria } from "../services/categoryService"; 
 
 export default function ListarCategorias() {
+  // Começamos com array vazio [] para o .length nunca quebrar
   const [categorias, setCategorias] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    carregarCategorias();
+    carregarDados();
   }, []);
 
-  function carregarCategorias() {
-    listarCategorias()
-      .then((res) => setCategorias(res.data))
-      .catch((err) => console.error("Erro ao carregar categorias:", err));
+  async function carregarDados() {
+    try {
+      console.log("Buscando categorias...");
+      const dados = await listarCategorias();
+      
+      // PROTEÇÃO DE OURO:
+      // Se 'dados' for uma lista, usa ela. Se for nulo/undefined, usa [].
+      if (Array.isArray(dados)) {
+        setCategorias(dados);
+      } else {
+        console.warn("Banco não retornou lista:", dados);
+        setCategorias([]); 
+      }
+    } catch (error) {
+      console.error("Erro fatal:", error);
+      // Não deixamos a tela preta, apenas logamos o erro
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function handleDelete(id) {
-    if (!window.confirm("Deseja realmente excluir essa categoria?")) return;
+  async function deletar(id) {
+    if (!confirm("Tem certeza que deseja excluir?")) return;
+    try {
+      await excluirCategoria(id);
+      alert("Categoria excluída!");
+      carregarDados(); // Atualiza a lista
+    } catch (error) {
+      alert("Erro ao excluir.");
+    }
+  }
 
-    excluirCategoria(id)
-      .then(() => carregarCategorias())
-      .catch((err) => console.error("Erro ao excluir categoria:", err));
+  if (loading) {
+    return <div style={{ padding: "40px", color: "white" }}>Carregando dados...</div>;
   }
 
   return (
-    <div style={{ padding: "40px", width: "100%", color: "white" }}>
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "40px",
-        }}
-      >
-        <h1 style={{ fontSize: "42px", fontWeight: "700" }}>Categorias</h1>
-
-        <Link
-          to="/categorias/criar"
-          style={{
-            backgroundColor: "#ffb300",
-            color: "black",
-            padding: "12px 22px",
-            borderRadius: "10px",
-            fontWeight: "600",
-            boxShadow: "0px 0px 15px rgba(255,179,0,0.4)",
-            textDecoration: "none",
+    <div style={{ padding: "40px", color: "white" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+        <h1>LISTAGEM OFICIAL</h1> {/* Título de prova */}
+        <Link 
+          to="/categorias/criar" 
+          style={{ 
+            background: "#ff7b00", 
+            padding: "10px 20px", 
+            textDecoration: "none", 
+            color: "white", 
+            borderRadius: "6px" 
           }}
         >
           + Nova Categoria
         </Link>
       </div>
 
-      <div
-        style={{
-          backgroundColor: "#0f0f16",
-          border: "1px solid #1d1d29",
-          borderRadius: "16px",
-          padding: "25px",
-          width: "60%",
-          minWidth: "450px",
-        }}
-      >
-        <table style={{ width: "100%", color: "white", borderSpacing: 0 }}>
+      {categorias.length === 0 ? (
+        <p>Nenhuma categoria encontrada. Clique em "Nova Categoria" para criar.</p>
+      ) : (
+        <table style={{ width: "100%", borderCollapse: "collapse", background: "#222", borderRadius: "8px" }}>
           <thead>
-            <tr style={{ color: "#b5b5c1", borderBottom: "1px solid #1d1d29" }}>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Ações</th>
+            <tr style={{ borderBottom: "1px solid #444", textAlign: "left" }}>
+              <th style={{ padding: "15px" }}>ID</th>
+              <th style={{ padding: "15px" }}>Nome</th>
+              <th style={{ padding: "15px" }}>Ações</th>
             </tr>
           </thead>
-
           <tbody>
-            {categorias.length === 0 ? (
-              <tr>
-                <td colSpan="3" style={{ color: "#777", textAlign: "center" }}>
-                  Nenhuma categoria encontrada.
+            {categorias.map((cat) => (
+              <tr key={cat.id || Math.random()} style={{ borderBottom: "1px solid #333" }}>
+                <td style={{ padding: "15px" }}>{cat.id}</td>
+                <td style={{ padding: "15px" }}>{cat.nome}</td>
+                <td style={{ padding: "15px" }}>
+                  <button 
+                    onClick={() => deletar(cat.id)}
+                    style={{ background: "red", color: "white", border: "none", padding: "6px 12px", borderRadius: "4px", cursor: "pointer" }}
+                  >
+                    Excluir
+                  </button>
                 </td>
               </tr>
-            ) : (
-              categorias.map((cat) => (
-                <tr key={cat.id}>
-                  <td>{cat.id}</td>
-                  <td>{cat.nome}</td>
-                  <td>
-
-                    <Link
-                      to={`/categorias/editar/${cat.id}`}
-                      style={{ color: "#4fa3ff", marginRight: "15px" }}
-                    >
-                      Editar
-                    </Link>
-
-                    <button
-                      onClick={() => handleDelete(cat.id)}
-                      style={{
-                        background: "transparent",
-                        border: "none",
-                        color: "#ff4f4f",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Excluir
-                    </button>
-
-                  </td>
-                </tr>
-              ))
-            )}
+            ))}
           </tbody>
         </table>
-      </div>
+      )}
     </div>
   );
 }
