@@ -2,21 +2,26 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { listarProdutos } from "../services/productService";
 import { criarPedido } from "../services/orderService";
-
+import * as CustomerService from "../services/customerService"
 export default function CriarPedido() {
   const navigate = useNavigate();
   
   const [produtos, setProdutos] = useState([]);
   const [carrinho, setCarrinho] = useState([]);
-  const [cliente, setCliente] = useState("");
+  const [cliente, setCliente] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [clientes, setClientes] = useState([]);
+  
 
+  
   // 1. Carrega os produtos do banco ao abrir a tela
   useEffect(() => {
     async function carregar() {
       try {
         const dados = await listarProdutos();
+        const clientes = await CustomerService.listar();
         setProdutos(dados || []);
+        setClientes(clientes || []);
       } catch (error) {
         alert("Erro ao carregar produtos. O Backend está ligado?");
       } finally {
@@ -57,9 +62,9 @@ export default function CriarPedido() {
     try {
       // Formata os dados como o Prisma espera receber
       const payload = {
-        cliente: cliente,
+        clienteId: parseInt(cliente),
         total: total,
-        itens: carrinho.map(item => ({
+        produtos: carrinho.map(item => ({
           produtoId: item.id,
           quantidade: item.quantidade
         }))
@@ -108,13 +113,20 @@ export default function CriarPedido() {
       <div style={{ flex: 1, background: "#222", padding: "20px", borderRadius: "10px", display: "flex", flexDirection: "column" }}>
         <h2>Novo Pedido</h2>
         
-        <input 
-          type="text" 
-          placeholder="Nome do Cliente" 
+       <label style={{ marginTop: 20 }}>Cliente</label>
+        <select
+          style={{ display: "block", marginTop: 5 }}
           value={cliente}
           onChange={(e) => setCliente(e.target.value)}
-          style={{ width: "100%", padding: "12px", marginTop: "10px", marginBottom: "20px", borderRadius: "5px", border: "none", fontSize: "16px" }}
-        />
+        >
+          <option value="">Selecione...</option>
+
+          {clientes.map((item) => (
+            <option key={item.id} value={item.id}>
+              {item.nome}
+            </option>
+          ))}
+        </select>
 
         <div style={{ flex: 1, overflowY: "auto", borderTop: "1px solid #444", borderBottom: "1px solid #444", padding: "10px 0" }}>
           {carrinho.length === 0 ? (
