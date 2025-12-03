@@ -20,7 +20,7 @@ export default function CriarCategoria() {
 
   return (
     <div style={{ padding: "40px", color: "white" }}>
-      <h1>AGORA VAI 100%</h1> {/* Título de prova */}
+      <h1>Criando Categoria</h1> {/* Título de prova */}
       <form onSubmit={salvar} style={{ marginTop: "25px" }}>
         <input
           type="text"
