@@ -3,10 +3,6 @@
 export default function Navbar() {
   const navigate = useNavigate();
 
-  function handleLogout() {
-    localStorage.removeItem("token");
-    navigate("/login");
-  }
 
   return (
     <div style={styles.navbar}>
@@ -19,12 +15,6 @@ export default function Navbar() {
       <div style={styles.right}>
         {/* search removed per request */}
 
-        <button
-          onClick={handleLogout}
-          style={styles.logoutButton}
-        >
-          Sair
-        </button>
 
         <div style={styles.avatar} />
       </div>
